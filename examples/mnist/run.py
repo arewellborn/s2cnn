@@ -15,7 +15,7 @@ import numpy as np
 from torch.autograd import Variable
 import argparse
 
-MNIST_PATH = "s2_mnist.gz"
+#MNIST_PATH = "s2_mnist.gz"
 
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -186,7 +186,7 @@ class S2ConvNet_deep(nn.Module):
 
 
 
-def main(network):
+def main(network, MNIST_PATH):
 
     train_loader, test_loader, train_dataset, _ = load_data(
         MNIST_PATH, BATCH_SIZE)
@@ -250,6 +250,10 @@ if __name__ == '__main__':
                         help="network architecture to use",
                         default='original',
                         choices=['original', 'deep'])
+    parser.add_argument("--MNIST_PATH",
+                       help="file path for s2_mnist.gz file",
+                       default="s2_mnist.gz"
+    )
     args = parser.parse_args()
 
-    main(args.network)
+    main(args.network, args.MNIST_PATH)
