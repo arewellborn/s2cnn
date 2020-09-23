@@ -115,5 +115,6 @@ def pickle_loads(file, file_path):
 
 def pickle_dumps(dump, file):
     max_bytes = 2**32 - 1
+    bytes_out = pickle.dumps(dump)
     for idx in range(0, len(dump), max_bytes):
-        file.write(dump[idx:idx + max_bytes])
+        file.write(bytes_out[idx:idx + max_bytes])
