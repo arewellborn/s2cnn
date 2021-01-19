@@ -105,7 +105,7 @@ def cached_dirpklgz(dirname):
 
 
 def pickle_loads(file, file_path):
-    max_bytes = 2**32 - 1
+    max_bytes = 2**31 - 1
     bytes_in = bytearray(0)
     input_size = os.path.getsize(file_path)
     for _ in range(0, input_size, max_bytes):
@@ -114,7 +114,7 @@ def pickle_loads(file, file_path):
     return result
 
 def pickle_dumps(dump, file):
-    max_bytes = 2**32 - 1
+    max_bytes = 2**31 - 1
     bytes_out = pickle.dumps(dump)
     for idx in range(0, len(dump), max_bytes):
         file.write(bytes_out[idx:idx + max_bytes])
