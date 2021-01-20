@@ -74,7 +74,7 @@ def cached_dirpklgz(dirname):
 
             try:
                 with open(indexfile, "rb") as file:
-                    index = pickle.load(file, indexfile)
+                    index = pickle.load(file)
             except FileNotFoundError:
                 index = {}
 
@@ -90,7 +90,7 @@ def cached_dirpklgz(dirname):
             try:
                 with gzip.open(filepath, "rb") as file:
                     print("load {}... ".format(filename), end="")
-                    result = pickle.load(file, filepath)
+                    result = pickle.load(file)
             except FileNotFoundError:
                 print("compute {}... ".format(filename), end="")
                 sys.stdout.flush()
