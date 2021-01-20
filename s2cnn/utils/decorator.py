@@ -74,7 +74,7 @@ def cached_dirpklgz(dirname):
 
             try:
                 with open(indexfile, "rb") as file:
-                    index = pickle_loads(file, indexfile)
+                    index = pickle.load(file, indexfile)
             except FileNotFoundError:
                 index = {}
 
@@ -83,21 +83,21 @@ def cached_dirpklgz(dirname):
             except KeyError:
                 index[args] = filename = "{}.pkl.gz".format(len(index))
                 with open(indexfile, "wb") as file:
-                    pickle_dumps(index, file)
+                    pickle.dump(index, file, protocol=4)
 
             filepath = os.path.join(dirname, filename)
 
             try:
                 with gzip.open(filepath, "rb") as file:
                     print("load {}... ".format(filename), end="")
-                    result = pickle_loads(file, filepath)
+                    result = pickle.load(file, filepath)
             except FileNotFoundError:
                 print("compute {}... ".format(filename), end="")
                 sys.stdout.flush()
                 result = func(*args)
                 print("save {}... ".format(filename), end="")
                 with gzip.open(filepath, "wb") as file:
-                    pickle_dumps(result, file)
+                    pickle.dump(result, file, protocol=4)
             print("done")
             return result
         return wrapper
@@ -115,6 +115,8 @@ def pickle_loads(file, file_path):
 
 def pickle_dumps(dump, file):
     max_bytes = 2**31 - 1
-    bytes_out = pickle.dumps(dump)
+    n_bytes = 2**31
+    data = bytearray(n_bytes)
+    bytes_out = pickle.dumps(data)
     for idx in range(0, len(dump), max_bytes):
         file.write(bytes_out[idx:idx + max_bytes])
